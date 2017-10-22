@@ -1,5 +1,8 @@
 
 # Modern Infra avec Docker et Rancher
+
+![Intro](http://antoine-cormouls.fr/wp-content/uploads/2017/10/intro.jpg)
+
 Ici nous allons voir comment mettre en place une infrastructure robuste pour le déploiement d'application ou service scalable.
 Nous allons nous pencher sur l'utilisation de Docker ainsi que la notion d'orchestrer avec Rancher.
 
@@ -26,6 +29,9 @@ Nous allons nous pencher sur l'utilisation de Docker ainsi que la notion d'orche
 
 
 ## Begin with Docker
+
+![Docker](http://antoine-cormouls.fr/wp-content/uploads/2017/10/logo-docker.png)
+
 Docker permet d'introduire le concept de Container. Un Container est une sorte de mini machine virtuelle qui troune sous linux. Un Container **DOIT** contenir ( sauf rare cas ) qu'un seul processus principal. Un Container ne continue à tourner que si le processus principal ( comme un serveur ) est bloquant, c'est à dire qu'il faut un CTRL+C normalement pour le terminer.
 
 ### Installation
@@ -172,6 +178,7 @@ Vous êtes autre part : `docker-compose down /mon/docker-compose.yml`
 Pour plus d'infos sur Docker Compose : [Docker Compose v2 sur le site Docker](https://docs.docker.com/compose/compose-file/compose-file-v2/)
 
 ## Begin with Rancher 
+![Rancher](http://antoine-cormouls.fr/wp-content/uploads/2017/10/rancher-logo.png)
 
 Vous vous doutez bien que en production ou en environnement de test vous ne pouvez pas utiliser Docker à la main en allant manuellement démarrer les Containers sur le serveur. Pour cela l'homme, plus particulièrement les Dev Ops ont inventé les Orchestreur. Nous allons nous interresser à un Orchestreur Open Source facile à mettre en place ( grâce à Docker évidemment).
 
@@ -566,13 +573,25 @@ Pour cela vous pouvez soit envoyer vos images sur le serveur ( pas scalable ) ou
 
 Si vous utilisez le DockerHub vous pouvez allez sur Rancher > Infra Structure > Registres, puis ajouter les login pour que Rancher ( et vos serveurs ) puisse accéder à votre repo de Containers.
 
+![Registres](http://antoine-cormouls.fr/wp-content/uploads/2017/10/registres.png)
+*Vous pouvez ajouter des registres perso ou Docker Hub pour Pull des images privées*
+
 Il faut ensuite que vous ajoutiez un Host (un serveur) pour y lancer les containers. Les steps pour le faire sont très bien indiqués sur votre Rancher, pas besoin d'explique plus de choses.
 
+![Ajout Servuer](http://antoine-cormouls.fr/wp-content/uploads/2017/10/hosts.png)
+*Ici sont listé tout les serveurs que vous avez ajoutés*
+
 ### Créer sa première Stack <a id="premiereStack"></a> 
+
+![Stack](http://antoine-cormouls.fr/wp-content/uploads/2017/10/capture1.png)
+*Vous pouvez visualiser facilement l'état de votre application et ses services*
 
 Dans un premier temps nous allons configurer un proxy.
 Nous allons créer un item Catalog pour faire ceci : Rancher > Admin > Settings et ajouter `https://github.com/adi90x/rancher-active-proxy.git`.
 Une fois ajouté il faut aller dans Catalog puis dans la barre de recherche "active proxy". Il devrait normalement vous trouver l'item "Rancher Active Proxy". Cliquez sur "Voir les Détails" saisissez les données requise puis cliquez sur "Lancer".
+
+![Catalog](http://antoine-cormouls.fr/wp-content/uploads/2017/10/catalog.png)
+*Vous avez accès à un Catalog permettant de mettre en place des services très rapidement*
 
 Si tout se passe bien en allant dans "Stacks" vous devriez voir la Stack Rancher Active Proxy en vert.
 
@@ -612,10 +631,19 @@ Les labels (rap) ajouté permettent d'indiquer à la Stack Rancher Active Proxy 
 Rancher va déployer votre app comme un grand c'est à dire démarrer 1 par 1 chaque Container et les dispatcher sur vos différents serveurs ( si vous en avez plusieurs ).
 
 #### Monitorer <a id="monitorer"></a> 
+![Logs](http://antoine-cormouls.fr/wp-content/uploads/2017/10/logs.png)
+*On peut voir les logs*
 
 Pour faire des backup de votre base de donnée ou simplement charger une base de données déja existante vous avez juste à aller dans votre Stack, puis cliquer sur le service `db` , en suite cliquer sur les options du container listé et faire : "Execute Shell", vous pouvez aussi voir les logs du Container en cliquant sur "View Logs"
 
+![Shell](http://antoine-cormouls.fr/wp-content/uploads/2017/10/shell.png)
+*On peut utiliser le Shell d'un container*
+
+![Serveur](http://antoine-cormouls.fr/wp-content/uploads/2017/10/container.png)
+*On peut aussi voir des stats sur un serveur*
 #### Upgrade <a id="upgrade"></a> 
+![Upgrade](http://antoine-cormouls.fr/wp-content/uploads/2017/10/upgrade.png)
+*Vous pouvez manager et entiérement customiser un service*
 
 Vous pouvez upgrade à tout moment vos services pour par exemple modifier les variables d'environnement, mettre à jour le container, ajouter des règles d'execution, modifier les labels, scaler un service ( multiplier les Containers ).
 Pour cela allez dans Stack plus cliquez sur votre Stack puis à droite de la page vous avec une petite flèche ou un menu d'option pour chaque service.
